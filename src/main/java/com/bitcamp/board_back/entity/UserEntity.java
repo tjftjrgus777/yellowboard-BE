@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bitcamp.board_back.dto.request.auth.SignUpRequesetDto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "user")
-@Table (name= "user")
+@Table(name = "user")
 public class UserEntity {
 
     @Id
@@ -22,8 +24,17 @@ public class UserEntity {
     private String telNumber;
     private String address;
     private String addressDetail;
-    private String profileImage;  
+    private String profileImage;
+    private boolean agreedPersonal;
 
+    public UserEntity(SignUpRequesetDto dto) {
+        this.email = dto.getEmail();
+        this.password = dto.getPassword();
+        this.nickname = dto.getTelNumber();
+        this.telNumber = dto.getTelNumber();
+        this.address = dto.getAddress();
+        this.addressDetail = dto.getAddressDetail();
+        this.agreedPersonal = dto.getAgreedPersonal();
+    }
 
-    
 }
