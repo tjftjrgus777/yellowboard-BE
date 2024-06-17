@@ -5,7 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-import com.bitcamp.board_back.entity.primaryKey.FavoritePk;
+import com.bitcamp.board_back.entity.primarykey.FavoritePk;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
