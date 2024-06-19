@@ -12,6 +12,7 @@ import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 import com.bitcamp.board_back.dto.request.board.PostCommentRequesetDto;
 import com.bitcamp.board_back.dto.response.ResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetCommentListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostCommentResponseDto;
@@ -26,6 +27,7 @@ import com.bitcamp.board_back.repository.FavoriteRepository;
 import com.bitcamp.board_back.repository.ImageRepository;
 import com.bitcamp.board_back.repository.UserRepository;
 import com.bitcamp.board_back.repository.resultSet.GetBoardResultSet;
+import com.bitcamp.board_back.repository.resultSet.GetCommentListResultSet;
 import com.bitcamp.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.bitcamp.board_back.service.BoardService;
 
@@ -86,7 +88,27 @@ public class BoardServiceImplement implements BoardService {
 
         return GetFavoriteListResponseDto.success(resultSets);
     }
-    
+
+    @Override
+    public ResponseEntity<? super GetCommentListResponseDto> getCommentList(Integer boardNumber) {
+       
+        List<GetCommentListResultSet> resultSets = new ArrayList<>();
+
+        try {
+        
+            boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
+            if (!existedBoard) return GetCommentListResponseDto.noExistBoard();
+
+            resultSets = commentRepository.getCommentList(boardNumber);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetCommentListResponseDto.success(resultSets);
+    }
+
     @Override
     public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
 
@@ -179,6 +201,8 @@ public class BoardServiceImplement implements BoardService {
 
         return PutFavoriteResponseDto.success();
     }
+
+    
 
     
 
