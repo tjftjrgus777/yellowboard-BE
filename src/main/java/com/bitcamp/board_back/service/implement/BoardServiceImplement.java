@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 import com.bitcamp.board_back.dto.response.ResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.bitcamp.board_back.entity.BoardEntity;
@@ -19,6 +20,7 @@ import com.bitcamp.board_back.repository.FavoriteRepository;
 import com.bitcamp.board_back.repository.ImageRepository;
 import com.bitcamp.board_back.repository.UserRepository;
 import com.bitcamp.board_back.repository.resultSet.GetBoardResultSet;
+import com.bitcamp.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.bitcamp.board_back.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -56,6 +58,26 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return GetBoardResponseDto.success(resultSet, imageEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(Integer boardNumber) {
+        
+        List<GetFavoriteListResultSet> resultSets = new ArrayList<>();
+
+        try {
+            
+            boolean existedBoard =boardRepository.existsByBoardNumber(boardNumber);
+            if (!existedBoard) return GetFavoriteListResponseDto.noExistBoard();
+
+            resultSets = favoriteRepository.getFavoriteList(boardNumber);
+            
+        } catch (Exception exception){
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetFavoriteListResponseDto.success(resultSets);
     }
     
     @Override
@@ -125,6 +147,8 @@ public class BoardServiceImplement implements BoardService {
 
         return PutFavoriteResponseDto.success();
     }
+
+    
 
    
     
