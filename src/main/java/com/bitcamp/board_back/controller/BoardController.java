@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.bitcamp.board_back.service.BoardService;
@@ -32,6 +33,14 @@ public class BoardController {
         @PathVariable("boardNumber") Integer boardNumber
     ){
         ResponseEntity<? super GetBoardResponseDto> response = boardService.getBoard(boardNumber);
+        return response;
+    }
+
+    @GetMapping("/{boardNumber}/favorite-list")
+    public ResponseEntity<? super GetFavoriteListResponseDto> getFavoriteList(
+        @PathVariable("boardNumber") Integer boardNumber
+    ) {
+        ResponseEntity<? super GetFavoriteListResponseDto> response =boardService.getFavoriteList(boardNumber);
         return response;
     }
 
