@@ -10,9 +10,12 @@ import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 import com.bitcamp.board_back.dto.response.ResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.bitcamp.board_back.entity.BoardEntity;
+import com.bitcamp.board_back.entity.FavoriteEntity;
 import com.bitcamp.board_back.entity.ImageEntity;
 import com.bitcamp.board_back.repository.BoardRepository;
+import com.bitcamp.board_back.repository.FavoriteRepository;
 import com.bitcamp.board_back.repository.ImageRepository;
 import com.bitcamp.board_back.repository.UserRepository;
 import com.bitcamp.board_back.repository.resultSet.GetBoardResultSet;
@@ -27,6 +30,7 @@ public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
 
     @Override
     public ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber) {
@@ -89,6 +93,37 @@ public class BoardServiceImplement implements BoardService {
 
         return PostBoardResponseDto.success();
         
+    }
+
+    @Override
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
+        
+        try {
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PutFavoriteResponseDto.noExistUser();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return PutFavoriteResponseDto.noExistBoard();
+
+            FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
+            if (favoriteEntity == null) {
+                favoriteEntity = new FavoriteEntity(email, boardNumber);
+                favoriteRepository.save(favoriteEntity);
+                boardEntity.increaseFavoriteCount();
+            } else {
+                favoriteRepository.delete(favoriteEntity);
+                boardEntity.decreaseFavoriteCount();
+            }
+
+            boardRepository.save(boardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PutFavoriteResponseDto.success();
     }
 
    
