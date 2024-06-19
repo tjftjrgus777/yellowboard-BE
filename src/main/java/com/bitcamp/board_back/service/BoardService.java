@@ -7,6 +7,7 @@ import com.bitcamp.board_back.dto.request.board.PostCommentRequesetDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetCommentListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
+import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostCommentResponseDto;
 import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
@@ -20,4 +21,6 @@ public interface BoardService {
     ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequesetDto dto, Integer boardNumber, String email); 
 
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
+
+    ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber);
 }
