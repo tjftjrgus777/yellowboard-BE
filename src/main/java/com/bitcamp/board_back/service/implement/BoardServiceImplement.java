@@ -3,19 +3,25 @@ package com.bitcamp.board_back.service.implement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.Email;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
+import com.bitcamp.board_back.dto.request.board.PostCommentRequesetDto;
 import com.bitcamp.board_back.dto.response.ResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.PostCommentResponseDto;
 import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.bitcamp.board_back.entity.BoardEntity;
+import com.bitcamp.board_back.entity.CommentEntity;
 import com.bitcamp.board_back.entity.FavoriteEntity;
 import com.bitcamp.board_back.entity.ImageEntity;
 import com.bitcamp.board_back.repository.BoardRepository;
+import com.bitcamp.board_back.repository.CommentRepository;
 import com.bitcamp.board_back.repository.FavoriteRepository;
 import com.bitcamp.board_back.repository.ImageRepository;
 import com.bitcamp.board_back.repository.UserRepository;
@@ -32,6 +38,7 @@ public class BoardServiceImplement implements BoardService {
     private final BoardRepository boardRepository;
     private final ImageRepository imageRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
 
     @Override
@@ -115,6 +122,31 @@ public class BoardServiceImplement implements BoardService {
 
         return PostBoardResponseDto.success();
         
+    }
+
+    @Override
+    public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequesetDto dto, Integer boardNumber, String email) {
+       
+        try {
+            
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return PostCommentResponseDto.noExistBoard();
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return PostCommentResponseDto.noExistUser();
+
+            CommentEntity commentEntity = new CommentEntity(dto, boardNumber , email);
+            commentRepository.save(commentEntity);
+
+            boardEntity.increaseCommentCount();
+            boardRepository.save(boardEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return PostCommentResponseDto.success();
     }
 
     @Override

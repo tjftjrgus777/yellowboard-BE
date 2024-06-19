@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
+import com.bitcamp.board_back.dto.request.board.PostCommentRequesetDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
+import com.bitcamp.board_back.dto.response.board.PostCommentResponseDto;
 import com.bitcamp.board_back.dto.response.board.PutFavoriteResponseDto;
 import com.bitcamp.board_back.service.BoardService;
 
@@ -50,6 +52,16 @@ public class BoardController {
         @AuthenticationPrincipal String email
     ) {
         ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(RequestBody, email);
+        return response;
+    }
+
+    @PostMapping("/{boardNumber}/comment")
+    public ResponseEntity<? super PostCommentResponseDto> postComment(
+        @RequestBody @Valid PostCommentRequesetDto RequestBody,
+        @PathVariable("boardNumber") Integer boardNumber,
+        @AuthenticationPrincipal String email
+    ) {
+        ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(RequestBody, boardNumber, email);
         return response;
     }
 
