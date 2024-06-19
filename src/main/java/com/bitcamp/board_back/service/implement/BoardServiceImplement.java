@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 import com.bitcamp.board_back.dto.request.board.PostCommentRequesetDto;
 import com.bitcamp.board_back.dto.response.ResponseDto;
+import com.bitcamp.board_back.dto.response.board.DeleteBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetCommentListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
@@ -31,6 +32,7 @@ import com.bitcamp.board_back.repository.resultSet.GetBoardResultSet;
 import com.bitcamp.board_back.repository.resultSet.GetCommentListResultSet;
 import com.bitcamp.board_back.repository.resultSet.GetFavoriteListResultSet;
 import com.bitcamp.board_back.service.BoardService;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -218,6 +220,37 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return IncreaseViewCountResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
+       
+        try {
+
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return DeleteBoardResponseDto.noExistUser();
+
+            BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
+            if (boardEntity == null) return DeleteBoardResponseDto.noExistBoard();
+
+            String writeEmail = boardEntity.getWriterEmail();
+            boolean isWriter =writeEmail.equals(email);
+            if (!isWriter) return DeleteBoardResponseDto.noPermission();
+
+            imageRepository.deleteByBoardNumber(boardNumber);
+            commentRepository.deleteByBoardNumber(boardNumber);
+            favoriteRepository.deleteByBoardNumber(boardNumber);
+            
+            boardRepository.delete(boardEntity);
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return DeleteBoardResponseDto.success();
+
     }
 
     
