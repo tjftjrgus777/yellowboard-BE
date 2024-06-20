@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bitcamp.board_back.dto.request.board.PatchBoardRequestDto;
 import com.bitcamp.board_back.dto.request.board.PostBoardRequestDto;
 
 import lombok.AllArgsConstructor;
@@ -63,6 +64,11 @@ public class BoardEntity {
 
     public void decreaseFavoriteCount() {
         this.favoriteCount--;
+    }
+
+    public void patchBoard(PatchBoardRequestDto dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
     }
 
 
