@@ -23,6 +23,7 @@ import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetLatestBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetSearchBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetTop3BoardListResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetUserBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PatchBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
@@ -192,6 +193,26 @@ public class BoardServiceImplement implements BoardService {
 
         return GetSearchBoardListResponseDto.success(boardListViewEntities);
        
+    }
+
+    @Override
+    public ResponseEntity<? super GetUserBoardListResponseDto> getUserResponseList(String email) {
+        
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try  {
+            
+            boolean existedUser = userRepository.existsByEmail(email);
+            if (!existedUser) return GetUserBoardListResponseDto.noExistUser();
+
+            boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetUserBoardListResponseDto.success(boardListViewEntities);
     }
 
     @Override
@@ -378,6 +399,8 @@ public class BoardServiceImplement implements BoardService {
         return DeleteBoardResponseDto.success();
 
     }
+
+ 
 
     
 

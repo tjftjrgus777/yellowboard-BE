@@ -12,6 +12,7 @@ import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetLatestBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetSearchBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetTop3BoardListResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetUserBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PatchBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
@@ -25,6 +26,7 @@ public interface BoardService {
     ResponseEntity<? super GetLatestBoardListResponseDto> getLatestBoardList();
     ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
     ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord);
+    ResponseEntity<? super GetUserBoardListResponseDto> getUserResponseList(String email);
     ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
     ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequesetDto dto, Integer boardNumber, String email); 
     ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
