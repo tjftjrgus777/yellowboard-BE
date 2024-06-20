@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.bitcamp.board_back.dto.response.ResponseDto;
 import com.bitcamp.board_back.dto.response.search.GetPopularListResponseDto;
+import com.bitcamp.board_back.dto.response.search.GetRelationListResponseDto;
 import com.bitcamp.board_back.repository.SearchLogRepository;
 import com.bitcamp.board_back.repository.resultSet.GetPopularListResultSet;
+import com.bitcamp.board_back.repository.resultSet.GetRelationListResultSet;
 import com.bitcamp.board_back.service.SearchService;
 
 import lombok.RequiredArgsConstructor;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +38,23 @@ public class SearchServiceImplement implements SearchService{
        }
 
        return GetPopularListResponseDto.success(resultSets);
+    }
+
+    @Override
+    public ResponseEntity<? super GetRelationListResponseDto> getRelatioList(String seawrchWord) {
+        
+        List<GetRelationListResultSet> resultSets = new ArrayList<>();
+
+        try {
+            
+            resultSets = searchLogRepository.getRelationList(seawrchWord);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetRelationListResponseDto.success(resultSets);
     }
     
 }
