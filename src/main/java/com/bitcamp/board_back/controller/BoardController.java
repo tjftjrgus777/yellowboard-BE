@@ -25,6 +25,7 @@ import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetLatestBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetSearchBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetTop3BoardListResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetUserBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PatchBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.PostBoardResponseDto;
@@ -91,6 +92,14 @@ public class BoardController {
         @PathVariable(value = "preSearchWord", required = false) String preSearChWord
     ) {
         ResponseEntity<? super GetSearchBoardListResponseDto> response =boardService.getSearchBoardList(searchWord, preSearChWord);
+        return response;
+    }
+
+    @GetMapping("/user-board-list/{email}")
+    public ResponseEntity<? super GetUserBoardListResponseDto> getUserBoardLsit(
+        @PathVariable("email") String email
+    ) {
+        ResponseEntity<? super GetUserBoardListResponseDto> response = boardService.getUserResponseList(email);
         return response;
     }
 
