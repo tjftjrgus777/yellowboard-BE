@@ -2,6 +2,7 @@ package com.bitcamp.board_back.controller;
 
 import javax.validation.Valid;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +23,7 @@ import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetCommentListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetLatestBoardListResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetSearchBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetTop3BoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PatchBoardResponseDto;
@@ -80,6 +82,15 @@ public class BoardController {
     @GetMapping("/top-3")
     public  ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList() {
         ResponseEntity<? super GetTop3BoardListResponseDto> response = boardService.getTop3BoardList();
+        return response;
+    }
+
+    @GetMapping(value ={"/search-list/{searchWord}", "/search-list/{searchWord}/{preSearChWord}"})
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(
+        @PathVariable("searchWord") String searchWord,
+        @PathVariable(value = "preSearchWord", required = false) String preSearChWord
+    ) {
+        ResponseEntity<? super GetSearchBoardListResponseDto> response =boardService.getSearchBoardList(searchWord, preSearChWord);
         return response;
     }
 

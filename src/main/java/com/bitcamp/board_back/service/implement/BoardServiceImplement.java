@@ -21,6 +21,7 @@ import com.bitcamp.board_back.dto.response.board.GetBoardResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetCommentListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetFavoriteListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetLatestBoardListResponseDto;
+import com.bitcamp.board_back.dto.response.board.GetSearchBoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.GetTop3BoardListResponseDto;
 import com.bitcamp.board_back.dto.response.board.IncreaseViewCountResponseDto;
 import com.bitcamp.board_back.dto.response.board.PatchBoardResponseDto;
@@ -32,11 +33,13 @@ import com.bitcamp.board_back.entity.BoardListViewEntity;
 import com.bitcamp.board_back.entity.CommentEntity;
 import com.bitcamp.board_back.entity.FavoriteEntity;
 import com.bitcamp.board_back.entity.ImageEntity;
+import com.bitcamp.board_back.entity.SearchLogEntity;
 import com.bitcamp.board_back.repository.BoardListViewRepository;
 import com.bitcamp.board_back.repository.BoardRepository;
 import com.bitcamp.board_back.repository.CommentRepository;
 import com.bitcamp.board_back.repository.FavoriteRepository;
 import com.bitcamp.board_back.repository.ImageRepository;
+import com.bitcamp.board_back.repository.SearchLogRepository;
 import com.bitcamp.board_back.repository.UserRepository;
 import com.bitcamp.board_back.repository.resultSet.GetBoardResultSet;
 import com.bitcamp.board_back.repository.resultSet.GetCommentListResultSet;
@@ -54,6 +57,7 @@ public class BoardServiceImplement implements BoardService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final FavoriteRepository favoriteRepository;
+    private final SearchLogRepository searchLogRepository;
     private final BoardListViewRepository boardListViewRepository;
 
     @Override
@@ -158,6 +162,36 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return GetTop3BoardListResponseDto.success(boardListViewEntities);
+    }
+
+    @Override
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
+
+        List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
+
+        try {
+
+            boardListViewEntities = boardListViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
+            
+            SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
+            searchLogRepository.save(searchLogEntity);
+
+            boolean relation = preSearchWord != null;
+            if (relation) {
+                searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, relation);
+                searchLogRepository.save(searchLogEntity);
+            }
+
+
+
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetSearchBoardListResponseDto.success(boardListViewEntities);
+       
     }
 
     @Override
@@ -344,5 +378,7 @@ public class BoardServiceImplement implements BoardService {
         return DeleteBoardResponseDto.success();
 
     }
+
+    
 
 }
