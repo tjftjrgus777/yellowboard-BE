@@ -1,6 +1,6 @@
 package com.bitcamp.board_back.dto.request.user;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
