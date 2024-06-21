@@ -14,6 +14,6 @@ Yellow Board는 사용자가 자유롭게 콘텐츠를 생성하고 공유할 �
 ## 팀원 소개
 
 - **설석현**: [github.com/tjftjrgus777/yellowboard-BE.git](https://github.com/tjftjrgus777/yellowboard-BE.git)
-- **박상우**: [github.com/xiexiehanoi/BoardProject-BE](https://github.com/xiexiehanoi/BoardProject-BE)
+- **김상우**: [github.com/xiexiehanoi/BoardProject-BE](https://github.com/xiexiehanoi/BoardProject-BE)
 - **양홍빈**: [github.com/yhb131618/YellowStone_Front](https://github.com/yhb131618/YellowStone_Front)
 - **이소연**: [github.com/ssomal62/yellowboard-be.git](https://github.com/ssomal62/yellowboard-be.git)
