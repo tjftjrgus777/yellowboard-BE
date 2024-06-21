@@ -11,7 +11,7 @@ import com.bitcamp.board_back.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

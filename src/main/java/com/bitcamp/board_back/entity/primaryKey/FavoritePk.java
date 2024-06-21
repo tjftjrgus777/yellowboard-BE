@@ -1,6 +1,6 @@
 package com.bitcamp.board_back.entity.primarykey;
 
-import javax.persistence.Column;
+import jakarta.persistence.Column;
 import java.io.Serializable; // 이 부분 임의로 추가함
 import lombok.AllArgsConstructor;
 import lombok.Getter;

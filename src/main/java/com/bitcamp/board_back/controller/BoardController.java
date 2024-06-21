@@ -1,6 +1,6 @@
 package com.bitcamp.board_back.controller;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
