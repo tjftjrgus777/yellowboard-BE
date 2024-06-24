@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.feature.search.dto.response.GetPopularListResponseDto;
 import com.bitcamp.board_back.feature.search.dto.response.GetRelationListResponseDto;
 import com.bitcamp.board_back.feature.search.repository.SearchLogRepository;
@@ -29,12 +29,12 @@ public class SearchServiceImplement implements SearchService{
         List<GetPopularListResultSet> resultSets = new ArrayList<>();
 
        try {
-        
+
         resultSets = searchLogRepository.getPopularList();
 
        } catch (Exception exception) {
         exception.printStackTrace();
-        return ResponseDto.databaseError();
+        return ApiResponse.databaseError();
        }
 
        return GetPopularListResponseDto.success(resultSets);
@@ -42,19 +42,19 @@ public class SearchServiceImplement implements SearchService{
 
     @Override
     public ResponseEntity<? super GetRelationListResponseDto> getRelatioList(String seawrchWord) {
-        
+
         List<GetRelationListResultSet> resultSets = new ArrayList<>();
 
         try {
-            
+
             resultSets = searchLogRepository.getRelationList(seawrchWord);
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetRelationListResponseDto.success(resultSets);
     }
-    
+
 }

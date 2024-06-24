@@ -5,13 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ResponseCode;
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.ResponseMessage;
 
 import lombok.Getter;
 
 @Getter
-public class PostCommentResponseDto extends ResponseDto{
+public class PostCommentResponseDto extends ApiResponse {
 
     private PostCommentResponseDto() {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
@@ -21,15 +21,4 @@ public class PostCommentResponseDto extends ResponseDto{
         PostCommentResponseDto result = new PostCommentResponseDto();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
-    public static ResponseEntity<ResponseDto> noExistBoard() {
-        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_BOARD, ResponseMessage.NOT_EXISTED_BOARD);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
-
-    public static ResponseEntity<ResponseDto> noExistUser() {
-        ResponseDto result =new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
-    }
-    
 }

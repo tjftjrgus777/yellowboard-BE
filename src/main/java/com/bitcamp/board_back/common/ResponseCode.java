@@ -2,10 +2,11 @@ package com.bitcamp.board_back.common;
 
 public interface ResponseCode {
 
-    // HTTP Status 200
+    // ======================= 200 - SUCCESS ======================= //
     String SUCCESS = "SU";
 
-    // HTTP Status 400
+
+    // ======================= 400 - BAD REQUEST ERRORS ======================= //
     String VALIDATTION_FAILED = "VF";
     String DUPLICATE_EMAIL = "DE";
     String DUPLICATE_NICKNAME = "DN";
@@ -13,19 +14,17 @@ public interface ResponseCode {
     String NOT_EXISTED_USER = "NU";
     String NOT_EXISTED_BOARD = "NB";
 
-    // HTTP Status 401
+
+    // ======================= 401 - UNAUTHORIZED ERRORS ======================= //
     String SIGN_IN_FAIL = "SF";
     String AUTHORIZATION_FAIL = "AF";
 
-    // HTTP Status 403
+
+    // ======================= 403 - FORBIDDEN ERRORS ======================= //
     String NO_PERMISSION = "NP";
 
-    // HTTP Status 500
+
+    // ======================= 500 - INTERNAL SERVER ERROR ======================= //
     String DATABASE_ERROR = "DBE";
 
-
-
-
-
-    
 }
