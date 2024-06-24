@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ResponseCode;
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.ResponseMessage;
 import com.bitcamp.board_back.feature.user.entity.UserEntity;
 
 import lombok.Getter;
 
 @Getter
-public class GetUserResponseDto extends ResponseDto {
+public class GetUserResponseDto extends ApiResponse {
 
     private String email;
     private String nickname;
@@ -28,10 +28,4 @@ public class GetUserResponseDto extends ResponseDto {
         GetUserResponseDto result = new GetUserResponseDto(userEntity);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-
-    public static ResponseEntity<ResponseDto> noExistUser() {
-        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-    }
-    
 }

@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ResponseCode;
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.ResponseMessage;
 import com.bitcamp.board_back.feature.board.dto.object.BoardListItem;
 import com.bitcamp.board_back.feature.board.entity.BoardListViewEntity;
@@ -14,8 +14,8 @@ import com.bitcamp.board_back.feature.board.entity.BoardListViewEntity;
 import lombok.Getter;
 
 @Getter
-public class GetLatestBoardListResponseDto extends ResponseDto {
-    
+public class GetLatestBoardListResponseDto extends ApiResponse {
+
     private List<BoardListItem> latestList;
 
     private GetLatestBoardListResponseDto(List<BoardListViewEntity> boardEntities){

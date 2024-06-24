@@ -5,15 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ResponseCode;
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.ResponseMessage;
 import com.bitcamp.board_back.feature.user.entity.UserEntity;
 
 import lombok.Getter;
 
 @Getter
-public class GetSignInUserResponseDto extends ResponseDto{
-    
+public class GetSignInUserResponseDto extends ApiResponse {
+
     private String email;
     private String nickname;
     private String profileImage;
@@ -27,11 +27,6 @@ public class GetSignInUserResponseDto extends ResponseDto{
 
     public static ResponseEntity<GetSignInUserResponseDto> success(UserEntity userEntity){
         GetSignInUserResponseDto result = new GetSignInUserResponseDto(userEntity);
-        return ResponseEntity.status(HttpStatus.OK).body(result);   
-    }
-
-    public static ResponseEntity<ResponseDto> notExisUser() {
-        ResponseDto result = new ResponseDto(ResponseCode.NOT_EXISTED_USER,ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }

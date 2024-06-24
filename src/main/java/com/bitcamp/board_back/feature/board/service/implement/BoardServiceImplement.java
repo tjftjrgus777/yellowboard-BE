@@ -12,7 +12,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.feature.board.dto.request.PatchBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostCommentRequestDto;
@@ -71,7 +71,7 @@ public class BoardServiceImplement implements BoardService {
             resultSet = boardRepository.getBoard(boardNumber);
 
             if (resultSet == null)
-                return GetBoardResponseDto.noExistBoard();
+                return GetBoardResponseDto.notExistBoard();
 
             imageEntities = imageRepository.findByBoardNumber(boardNumber);
 
@@ -81,7 +81,7 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetBoardResponseDto.success(resultSet, imageEntities);
@@ -96,13 +96,13 @@ public class BoardServiceImplement implements BoardService {
 
             boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
             if (!existedBoard)
-                return GetFavoriteListResponseDto.noExistBoard();
+                return GetFavoriteListResponseDto.notExistBoard();
 
             resultSets = favoriteRepository.getFavoriteList(boardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetFavoriteListResponseDto.success(resultSets);
@@ -117,13 +117,13 @@ public class BoardServiceImplement implements BoardService {
 
             boolean existedBoard = boardRepository.existsByBoardNumber(boardNumber);
             if (!existedBoard)
-                return GetCommentListResponseDto.noExistBoard();
+                return GetCommentListResponseDto.notExistBoard();
 
             resultSets = commentRepository.getCommentList(boardNumber);
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetCommentListResponseDto.success(resultSets);
@@ -140,7 +140,7 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetLatestBoardListResponseDto.success(boardListViewEntities);
@@ -159,7 +159,7 @@ public class BoardServiceImplement implements BoardService {
             boardListViewEntities = boardListViewRepository.findTop3ByWriteDatetimeGreaterThanOrderByFavoriteCountDescCommentCountDescViewCountDescWriteDatetimeDesc(sevenDaysAgo);
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetTop3BoardListResponseDto.success(boardListViewEntities);
@@ -173,7 +173,7 @@ public class BoardServiceImplement implements BoardService {
         try {
 
             boardListViewEntities = boardListViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
-            
+
             SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
             searchLogRepository.save(searchLogEntity);
 
@@ -188,28 +188,28 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetSearchBoardListResponseDto.success(boardListViewEntities);
-       
+
     }
 
     @Override
     public ResponseEntity<? super GetUserBoardListResponseDto> getUserResponseList(String email) {
-        
+
         List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
 
         try  {
-            
+
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return GetUserBoardListResponseDto.noExistUser();
+            if (!existedUser) return GetUserBoardListResponseDto.notExistUser();
 
             boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetUserBoardListResponseDto.success(boardListViewEntities);
@@ -222,7 +222,7 @@ public class BoardServiceImplement implements BoardService {
 
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail)
-                return PostBoardResponseDto.noExistUser();
+                return PostBoardResponseDto.notExistUser();
 
             BoardEntity boardEntity = new BoardEntity(dto, email);
             boardRepository.save(boardEntity);
@@ -241,7 +241,7 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PostBoardResponseDto.success();
@@ -250,17 +250,17 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber,
-            String email) {
+                                                                      String email) {
 
         try {
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
-                return PostCommentResponseDto.noExistBoard();
+                return PostCommentResponseDto.notExistBoard();
 
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
-                return PostCommentResponseDto.noExistUser();
+                return PostCommentResponseDto.notExistUser();
 
             CommentEntity commentEntity = new CommentEntity(dto, boardNumber, email);
             commentRepository.save(commentEntity);
@@ -270,7 +270,7 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PostCommentResponseDto.success();
@@ -283,11 +283,11 @@ public class BoardServiceImplement implements BoardService {
 
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
-                return PutFavoriteResponseDto.noExistUser();
+                return PutFavoriteResponseDto.notExistUser();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
-                return PutFavoriteResponseDto.noExistBoard();
+                return PutFavoriteResponseDto.notExistBoard();
 
             FavoriteEntity favoriteEntity = favoriteRepository.findByBoardNumberAndUserEmail(boardNumber, email);
             if (favoriteEntity == null) {
@@ -303,7 +303,7 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PutFavoriteResponseDto.success();
@@ -311,17 +311,17 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber,
-            String email) {
+                                                                    String email) {
 
         try {
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
-                return PatchBoardResponseDto.noExistBoard();
+                return PatchBoardResponseDto.notExistBoard();
 
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
-                return PatchBoardResponseDto.noExistUser();
+                return PatchBoardResponseDto.notExistUser();
 
             String writerEmail = boardEntity.getWriterEmail();
             boolean isWriter = writerEmail.equals(email);
@@ -343,7 +343,7 @@ public class BoardServiceImplement implements BoardService {
             imageRepository.saveAll(imageEntities);
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PatchBoardResponseDto.success();
@@ -355,13 +355,13 @@ public class BoardServiceImplement implements BoardService {
         try {
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
-                return IncreaseViewCountResponseDto.noExistBoard();
+                return IncreaseViewCountResponseDto.notExistBoard();
 
             boardEntity.increaseViewCount();
             boardRepository.save(boardEntity);
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return IncreaseViewCountResponseDto.success();
@@ -374,11 +374,11 @@ public class BoardServiceImplement implements BoardService {
 
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
-                return DeleteBoardResponseDto.noExistUser();
+                return DeleteBoardResponseDto.notExistUser();
 
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
-                return DeleteBoardResponseDto.noExistBoard();
+                return DeleteBoardResponseDto.notExistBoard();
 
             String writeEmail = boardEntity.getWriterEmail();
             boolean isWriter = writeEmail.equals(email);
@@ -393,15 +393,15 @@ public class BoardServiceImplement implements BoardService {
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return DeleteBoardResponseDto.success();
 
     }
 
- 
 
-    
+
+
 
 }

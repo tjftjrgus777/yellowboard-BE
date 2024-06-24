@@ -7,15 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ResponseCode;
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.ResponseMessage;
 import com.bitcamp.board_back.feature.search.repository.resultSet.GetRelationListResultSet;
 
 import lombok.Getter;
 
 @Getter
-public class GetRelationListResponseDto extends ResponseDto{
-    
+public class GetRelationListResponseDto extends ApiResponse {
+
     private List<String> relativeWordList;
 
     private GetRelationListResponseDto(List<GetRelationListResultSet> resultSets) {
