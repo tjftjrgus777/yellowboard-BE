@@ -6,7 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.bitcamp.board_back.dto.response.ResponseDto;
+import com.bitcamp.board_back.common.ResponseDto;
 
 @RestControllerAdvice
 public class BadRequestExceptionHandler {
