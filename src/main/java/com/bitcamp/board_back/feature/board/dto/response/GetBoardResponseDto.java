@@ -2,11 +2,10 @@ package com.bitcamp.board_back.feature.board.dto.response;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.bitcamp.board_back.common.enums.ApiStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import com.bitcamp.board_back.common.ResponseCode;
 import com.bitcamp.board_back.common.ApiResponse;
-import com.bitcamp.board_back.common.ResponseMessage;
 import com.bitcamp.board_back.feature.board.entity.ImageEntity;
 import com.bitcamp.board_back.feature.board.repository.resultSet.GetBoardResultSet;
 
@@ -25,7 +24,7 @@ public class GetBoardResponseDto extends ApiResponse {
     private String writerProfileImage;
 
     private GetBoardResponseDto(GetBoardResultSet resultSet, List<ImageEntity> imageEntities) {
-        super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
+        super(ApiStatus.SUCCESS.getCode(), ApiStatus.SUCCESS.getMessage());
 
         List<String> boardImageList = new ArrayList<>();
         for (ImageEntity imageEntity: imageEntities){
