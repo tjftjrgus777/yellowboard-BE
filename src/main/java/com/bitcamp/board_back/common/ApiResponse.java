@@ -1,5 +1,6 @@
 package com.bitcamp.board_back.common;
 
+import com.bitcamp.board_back.common.enums.ApiStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -13,53 +14,53 @@ public class ApiResponse {
     private String code;
     private String message;
 
-    // ======================= 400 - BAD REQUEST ERRORS ======================= //
+    public static ResponseEntity<ApiResponse> of(ApiStatus status) {
+        ApiResponse responseBody = new ApiResponse(status.getCode(), status.getMessage());
+        return ResponseEntity.status(HttpStatus.valueOf(status.getStatusCode())).body(responseBody);
+    }
+
+    // 200 - Success
+    public static ResponseEntity<ApiResponse> success() {
+        return of(ApiStatus.SUCCESS);
+    }
+
+    // 400 - Bad Request Errors
     public static ResponseEntity<ApiResponse> validationFailed() {
-        ApiResponse responseBody = new ApiResponse(ResponseCode.VALIDATTION_FAILED, ResponseMessage.VALIDATTION_FAILED);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-    }
-    public static ResponseEntity<ApiResponse> duplicateEmail(){
-        ApiResponse result = new ApiResponse(ResponseCode.DUPLICATE_EMAIL, ResponseMessage.DUPLICATE_EMAIL);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        return of(ApiStatus.VALIDATION_FAILED);
     }
 
-    public static ResponseEntity<ApiResponse> duplicateNickname(){
-        ApiResponse result = new ApiResponse(ResponseCode.DUPLICATE_NICKNAME, ResponseMessage.DUPLICATE_NICKNAME);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    public static ResponseEntity<ApiResponse> duplicateEmail() {
+        return of(ApiStatus.DUPLICATE_EMAIL);
     }
 
-    public static ResponseEntity<ApiResponse> duplicateTelNumber(){
-        ApiResponse result = new ApiResponse(ResponseCode.DUPLICATE_TEL_NUMBER, ResponseMessage.DUPLICATE_TEL_NUMBER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    public static ResponseEntity<ApiResponse> duplicateNickname() {
+        return of(ApiStatus.DUPLICATE_NICKNAME);
     }
 
-    public static ResponseEntity<ApiResponse> notExistBoard() {
-        ApiResponse result = new ApiResponse(ResponseCode.NOT_EXISTED_BOARD, ResponseMessage.NOT_EXISTED_BOARD);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+    public static ResponseEntity<ApiResponse> duplicateTelNumber() {
+        return of(ApiStatus.DUPLICATE_TEL_NUMBER);
     }
 
     public static ResponseEntity<ApiResponse> notExistUser() {
-        ApiResponse result = new ApiResponse(ResponseCode.NOT_EXISTED_USER, ResponseMessage.NOT_EXISTED_USER);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        return of(ApiStatus.NOT_EXISTED_USER);
     }
 
-
-    // ======================= 401 - UNAUTHORIZED ERRORS ======================= //
-    public static ResponseEntity<ApiResponse> signInFail(){
-        ApiResponse result = new ApiResponse(ResponseCode.SIGN_IN_FAIL, ResponseMessage.SIGN_IN_FAIL);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
+    public static ResponseEntity<ApiResponse> notExistBoard() {
+        return of(ApiStatus.NOT_EXISTED_BOARD);
     }
 
+    // 401 - Unauthorized Errors
+    public static ResponseEntity<ApiResponse> signInFail() {
+        return of(ApiStatus.SIGN_IN_FAIL);
+    }
 
-    // ======================= 403 - FORBIDDEN ERRORS ======================= //
+    // 403 - Forbidden Errors
     public static ResponseEntity<ApiResponse> noPermission() {
-        ApiResponse result = new ApiResponse(ResponseCode.NO_PERMISSION, ResponseMessage.NO_PERMISSION);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(result);
+        return of(ApiStatus.NO_PERMISSION);
     }
 
-    // ======================= 500 - INTERNAL SERVER ERROR ======================= //
-    public static ResponseEntity<ApiResponse> databaseError(){
-        ApiResponse responseBody = new ApiResponse(ResponseCode.DATABASE_ERROR, ResponseMessage.DATABASE_ERROR);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+    // 500 - Internal Server Error
+    public static ResponseEntity<ApiResponse> databaseError() {
+        return of(ApiStatus.DATABASE_ERROR);
     }
 }
