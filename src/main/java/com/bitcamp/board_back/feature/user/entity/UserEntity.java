@@ -36,7 +36,7 @@ public class UserEntity {
     private String nickname;
 
     @Column(nullable = false, length = 20)
-    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$")
+    @Pattern(regexp = "^\\d{10,11}$")
     private String telNumber;
 
     private String address;
