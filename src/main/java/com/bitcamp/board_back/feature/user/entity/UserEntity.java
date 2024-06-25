@@ -2,12 +2,18 @@ package com.bitcamp.board_back.feature.user.entity;
 
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequesetDto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -17,15 +23,39 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+
+    @Column(nullable = false, length = 50) @Email
     private String email;
+
+    @Column(nullable = false, length = 300)
     private String password;
+
+    @Column(nullable = false, length = 20)
     private String nickname;
+
+    @Column(nullable = false, length = 20)
+    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$")
     private String telNumber;
+
     private String address;
     private String addressDetail;
     private String profileImage;
+
+    @Column(nullable = false)
     private boolean agreedPersonal;
 
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createAt;
+
+    @UpdateTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime updateAt;
+
+    @Builder
     public UserEntity(SignUpRequesetDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
