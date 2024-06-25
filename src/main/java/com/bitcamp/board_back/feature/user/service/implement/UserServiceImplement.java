@@ -3,7 +3,7 @@ package com.bitcamp.board_back.feature.user.service.implement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.feature.user.dto.request.PatchNicknameRequestDto;
 import com.bitcamp.board_back.feature.user.dto.request.PatchProfileImageRequestDto;
 import com.bitcamp.board_back.feature.user.dto.response.GetSignInUserResponseDto;
@@ -24,17 +24,17 @@ public class UserServiceImplement  implements UserService{
 
     @Override
     public ResponseEntity<? super GetUserResponseDto> getUser(String email) {
-       
+
         UserEntity userEntity = null;
 
         try {
-            
+
             userEntity = userRepository.findByEmail(email);
-            if (userEntity == null) return GetUserResponseDto.noExistUser();
+            if (userEntity == null) return GetUserResponseDto.notExistUser();
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetUserResponseDto.success(userEntity);
@@ -48,24 +48,24 @@ public class UserServiceImplement  implements UserService{
         try {
 
             userEntity = userRepository.findByEmail(email);
-            if (userEntity ==null) return GetSignInUserResponseDto.notExisUser();
-            
+            if (userEntity ==null) return GetSignInUserResponseDto.notExistUser();
+
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return GetSignInUserResponseDto.success(userEntity);
-       
+
     }
 
     @Override
-    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto,String email) {
-       
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String email) {
+
         try {
-            
+
             UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null) PatchNicknameResponseDto.noExistUser();
+            if (userEntity == null) PatchNicknameResponseDto.notExistUser();
 
             String nickname =dto.getNickname();
             boolean existedNickname =userRepository.existsByNickname(nickname);
@@ -76,32 +76,32 @@ public class UserServiceImplement  implements UserService{
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PatchNicknameResponseDto.success();
     }
 
     @Override
-    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto,String email) {
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String email) {
 
         try {
-            
+
             UserEntity userEntity = userRepository.findByEmail(email);
-            if (userEntity == null) return PatchProfileImageResponseDto.noExistUser();
+            if (userEntity == null) return PatchProfileImageResponseDto.notExistUser();
 
             String profileImage = dto.getProfileImage();
             userEntity.setProfileImage(profileImage);
             userRepository.save(userEntity);
-            
+
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return PatchProfileImageResponseDto.success();
     }
-        
-    
-    
+
+
+
 }

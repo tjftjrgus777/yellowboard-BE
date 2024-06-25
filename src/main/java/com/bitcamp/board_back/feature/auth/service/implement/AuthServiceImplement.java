@@ -5,7 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.bitcamp.board_back.common.ResponseDto;
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequesetDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
@@ -33,7 +33,7 @@ public class AuthServiceImplement implements AuthService{
             String email = dto.getEmail();
             boolean existedEmail = userRepository.existsByEmail(email);
             if (existedEmail) return SignUpResponseDto.duplicateEmail();
-            
+
             String nickname = dto.getNickname();
             boolean existedNickname = userRepository.existsByNickname(nickname);
             if (existedNickname) return SignUpResponseDto.duplicateNickname();
@@ -51,20 +51,20 @@ public class AuthServiceImplement implements AuthService{
 
         }catch (Exception exception){
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return SignUpResponseDto.success();
-        
+
     }
 
     @Override
     public ResponseEntity<? super SignInResponseDto> signIn(SignInRequestDto dto) {
-        
+
         String token = null;
 
         try {
- 
+
             String email = dto.getEmail();
             UserEntity userEntity = userRepository.findByEmail(email);
             if (userEntity == null) return SignInResponseDto.signInFail();
@@ -78,11 +78,11 @@ public class AuthServiceImplement implements AuthService{
 
         } catch (Exception exception) {
             exception.printStackTrace();
-            return ResponseDto.databaseError();
+            return ApiResponse.databaseError();
         }
 
         return SignInResponseDto.success(token);
 
     }
-    
+
 }
