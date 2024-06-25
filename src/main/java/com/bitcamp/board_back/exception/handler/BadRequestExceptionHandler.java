@@ -1,4 +1,4 @@
-package com.bitcamp.board_back.exception;
+package com.bitcamp.board_back.exception.handler;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
