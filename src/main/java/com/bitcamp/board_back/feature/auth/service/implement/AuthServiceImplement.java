@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
-import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequesetDto;
+import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignUpResponseDto;
 import com.bitcamp.board_back.feature.auth.service.AuthService;
@@ -27,7 +27,7 @@ public class AuthServiceImplement implements AuthService{
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequesetDto dto) {
+    public ResponseEntity<? super SignUpResponseDto> signUp(SignUpRequestDto dto) {
 
         try{
             String email = dto.getEmail();
@@ -46,7 +46,7 @@ public class AuthServiceImplement implements AuthService{
             String encodedPassword = passwordEncoder.encode(password);
             dto.setPassword(encodedPassword);
 
-            UserEntity userEntity = new UserEntity(dto);
+            UserEntity userEntity = dto.toEntity(encodedPassword);
             userRepository.save(userEntity);
 
         }catch (Exception exception){
