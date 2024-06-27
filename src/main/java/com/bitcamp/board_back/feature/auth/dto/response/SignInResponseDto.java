@@ -1,22 +1,21 @@
 package com.bitcamp.board_back.feature.auth.dto.response;
 
+import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.enums.ApiStatus;
 import com.bitcamp.board_back.feature.user.entity.UserEntity;
 import com.bitcamp.board_back.feature.user.enums.UserRole;
 import com.bitcamp.board_back.jwt.dto.JwtResponseDto;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import com.bitcamp.board_back.common.ApiResponse;
 
 import static com.bitcamp.board_back.constant.AuthConstant.AUTHORIZATION_KEY;
 import static com.bitcamp.board_back.constant.AuthConstant.BEARER_PREFIX;
 import static com.bitcamp.board_back.util.CookieUtil.createCookie;
 
-@Value
+@Getter
 public class SignInResponseDto extends ApiResponse {
 
     String nickname;
