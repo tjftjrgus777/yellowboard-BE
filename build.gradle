@@ -32,10 +32,13 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	implementation group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// SPRING DATA
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
