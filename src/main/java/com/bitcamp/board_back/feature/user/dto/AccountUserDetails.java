@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class BoardUserDetails implements UserDetails {
+public class AccountUserDetails implements UserDetails {
 
     @Getter
     private final UserEntity user;
     private String email;
 
-    public BoardUserDetails(UserEntity user) {
+    public AccountUserDetails(UserEntity user) {
         if(user == null) {
             throw new NotFoundException(ApiStatus.NOT_FOUND_ACCOUNT);
         }
