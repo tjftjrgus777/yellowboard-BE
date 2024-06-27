@@ -1,5 +1,6 @@
 package com.bitcamp.board_back.feature.board.controller;
 
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import jakarta.validation.Valid;
 
 
@@ -39,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/board")
 @RequiredArgsConstructor
 public class BoardController {
-    
+
     private final BoardService boardService;
 
     @GetMapping("/{boardNumber}")
@@ -65,7 +66,7 @@ public class BoardController {
         ResponseEntity<? super GetCommentListResponseDto> response = boardService.getCommentList(boardNumber);
         return response;
     }
-    
+
     @GetMapping("/{boardNumber}/increase-view-count")
     public ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(
         @PathVariable("boardNumber") Integer boardNumber
@@ -105,10 +106,10 @@ public class BoardController {
 
     @PostMapping("")
     public ResponseEntity<? super PostBoardResponseDto> postBoard(
-        @RequestBody @Valid PostBoardRequestDto RequestBody,
-        @AuthenticationPrincipal String email
-    ) {
-        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(RequestBody, email);
+            @RequestBody @Valid PostBoardRequestDto RequestBody,
+            @AuthenticationPrincipal AccountUserDetails accountUserDetails
+            ) {
+        ResponseEntity<? super PostBoardResponseDto> response = boardService.postBoard(RequestBody, accountUserDetails);
         return response;
     }
 
@@ -116,18 +117,18 @@ public class BoardController {
     public ResponseEntity<? super PostCommentResponseDto> postComment(
         @RequestBody @Valid PostCommentRequestDto RequestBody,
         @PathVariable("boardNumber") Integer boardNumber,
-        @AuthenticationPrincipal String email
+        @AuthenticationPrincipal AccountUserDetails accountUserDetails
     ) {
-        ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(RequestBody, boardNumber, email);
+        ResponseEntity<? super PostCommentResponseDto> response = boardService.postComment(RequestBody, boardNumber, accountUserDetails);
         return response;
     }
 
     @PutMapping("/{boardNumber}/favorite")
     public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(
         @PathVariable("boardNumber") Integer boardNumber,
-        @AuthenticationPrincipal String email
+        @AuthenticationPrincipal AccountUserDetails accountUserDetails
     ) {
-        ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, email);
+        ResponseEntity<? super PutFavoriteResponseDto> response = boardService.putFavorite(boardNumber, accountUserDetails);
         return response;
     }
 
@@ -135,20 +136,20 @@ public class BoardController {
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(
         @RequestBody @Valid PatchBoardRequestDto RequestBody,
         @PathVariable("boardNumber") Integer boardNumber,
-        @AuthenticationPrincipal String email
+        @AuthenticationPrincipal AccountUserDetails accountUserDetails
     ) {
-        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(RequestBody, boardNumber, email);
+        ResponseEntity<? super PatchBoardResponseDto> response = boardService.patchBoard(RequestBody, boardNumber, accountUserDetails);
         return response;
     }
 
     @DeleteMapping("/{boardNumber}")
     public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(
         @PathVariable("boardNumber") Integer boardNumber,
-        @AuthenticationPrincipal String email
+        @AuthenticationPrincipal AccountUserDetails accountUserDetails
     ) {
-        ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, email);
+        ResponseEntity<? super DeleteBoardResponseDto> response = boardService.deleteBoard(boardNumber, accountUserDetails);
         return response;
     }
 
-    
+
 }

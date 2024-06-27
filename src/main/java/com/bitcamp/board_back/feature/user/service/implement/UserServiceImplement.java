@@ -2,6 +2,7 @@ package com.bitcamp.board_back.feature.user.service.implement;
 
 import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.exception.DuplicatedException;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import com.bitcamp.board_back.feature.user.dto.request.PatchNicknameRequestDto;
 import com.bitcamp.board_back.feature.user.dto.request.PatchProfileImageRequestDto;
 import com.bitcamp.board_back.feature.user.dto.response.GetSignInUserResponseDto;
@@ -37,9 +38,9 @@ public class UserServiceImplement  implements UserService{
     }
 
     @Override
-    public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(String email) {
+    public ResponseEntity<? super GetSignInUserResponseDto> getSignInUser(AccountUserDetails accountUserDetails) {
         try {
-            UserEntity userEntity = userRepository.findByEmail(email);
+            UserEntity userEntity = userRepository.findByEmail(accountUserDetails.getUser().getEmail());
             validateUserEntity(userEntity);
             return GetSignInUserResponseDto.success(userEntity);
 
@@ -50,9 +51,9 @@ public class UserServiceImplement  implements UserService{
     }
 
     @Override
-    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, String email) {
+    public ResponseEntity<? super PatchNicknameResponseDto> patchNickname(PatchNicknameRequestDto dto, AccountUserDetails accountUserDetails) {
         try {
-            UserEntity userEntity = userRepository.findByEmail(email);
+            UserEntity userEntity = userRepository.findByEmail(accountUserDetails.getUser().getEmail());
             validateUserEntity(userEntity);
 
             String nickname =dto.getNickname();
@@ -70,9 +71,9 @@ public class UserServiceImplement  implements UserService{
     }
 
     @Override
-    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, String email) {
+    public ResponseEntity<? super PatchProfileImageResponseDto> patchProfileImage(PatchProfileImageRequestDto dto, AccountUserDetails accountUserDetails) {
         try {
-            UserEntity userEntity = userRepository.findByEmail(email);
+            UserEntity userEntity = userRepository.findByEmail(accountUserDetails.getUser().getEmail());
             validateUserEntity(userEntity);
 
             String profileImage = dto.getProfileImage();

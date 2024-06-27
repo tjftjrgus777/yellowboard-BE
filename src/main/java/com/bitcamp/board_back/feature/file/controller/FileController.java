@@ -15,27 +15,22 @@ import com.bitcamp.board_back.feature.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/api/v1/file")
 @RequiredArgsConstructor
 public class FileController {
 
     private final FileService fileService;
 
     @PostMapping("/upload")
-    public String upload(
-        @RequestParam("file") MultipartFile file
-    ) {
-        String url = fileService.upload(file);
-        return url;
-
+    public String upload(@RequestParam("file") MultipartFile file) {
+        return fileService.upload(file);
     }
 
     @GetMapping(value = "{fileName}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public Resource getImage(
         @PathVariable("fileName") String fileName
     ) {
-        Resource resource = fileService.getiImage(fileName);
-        return resource;
+        return fileService.getiImage(fileName);
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package com.bitcamp.board_back.feature.user.service.implement;
 
 import com.bitcamp.board_back.exception.NotFoundException;
-import com.bitcamp.board_back.feature.user.dto.BoardUserDetails;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import com.bitcamp.board_back.feature.user.entity.UserEntity;
 import com.bitcamp.board_back.feature.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ import static com.bitcamp.board_back.common.enums.ApiStatus.NOT_EXISTED_USER;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BoardUserDetailServiceImplement implements UserDetailsService {
+public class AccountUserDetailServiceImplement implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -26,7 +26,7 @@ public class BoardUserDetailServiceImplement implements UserDetailsService {
         if (user == null) {
             throw new NotFoundException(NOT_EXISTED_USER);
         }
-        return new BoardUserDetails(user);
+        return new AccountUserDetails(user);
     }
 
 }
