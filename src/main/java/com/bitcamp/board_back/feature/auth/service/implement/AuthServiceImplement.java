@@ -3,8 +3,10 @@ package com.bitcamp.board_back.feature.auth.service.implement;
 import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.exception.AuthException;
 import com.bitcamp.board_back.exception.NotFoundException;
+import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignOutResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignUpResponseDto;
@@ -160,5 +162,22 @@ public class AuthServiceImplement implements AuthService{
         redisService.deleteData(email);
         redisService.setDataExpire(
                 BLACK_LIST_KEY_PREFIX + accessToken, VALUE_TRUE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+    }
+
+    @Override
+    public ResponseEntity<? super IdCheckResponseDto> idCheck(IdCheckRequestDto dto) {
+       
+        try {
+            
+            String userEmail = dto.getEmail();
+            boolean isExistEmail = userRepository.existsByEmail(userEmail);
+            if (isExistEmail) return ApiResponse.duplicateEmail();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ApiResponse.databaseError();
+        }
+
+        return IdCheckResponseDto.success();
     }
 }
