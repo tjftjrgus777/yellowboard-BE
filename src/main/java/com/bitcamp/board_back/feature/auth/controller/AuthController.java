@@ -1,7 +1,9 @@
 package com.bitcamp.board_back.feature.auth.controller;
 
+import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignOutResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignUpResponseDto;
@@ -38,6 +40,14 @@ public class AuthController {
             @RequestBody @Valid SignInRequestDto requestBody
     ) {
         return authService.signIn(requestBody);
+    }
+
+    @PostMapping("/email-check")
+    public ResponseEntity<? super IdCheckResponseDto> idCheck (
+        @RequestBody @Valid IdCheckRequestDto requestBody
+    ){
+        ResponseEntity<? super IdCheckResponseDto> response = authService.idCheck(requestBody);
+        return response;
     }
 
     @PostMapping("/sign-out")

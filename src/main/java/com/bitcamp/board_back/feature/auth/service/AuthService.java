@@ -5,8 +5,10 @@ import com.bitcamp.board_back.jwt.dto.JwtReissueResponseDto;
 import com.bitcamp.board_back.jwt.dto.JwtRequestDto;
 import org.springframework.http.ResponseEntity;
 
+import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignUpResponseDto;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,4 +26,6 @@ public interface AuthService {
 
     @Transactional
     ResponseEntity<JwtReissueResponseDto> reissue(final JwtRequestDto tDto);
+
+    ResponseEntity<? super IdCheckResponseDto> idCheck(IdCheckRequestDto dto);
 }
