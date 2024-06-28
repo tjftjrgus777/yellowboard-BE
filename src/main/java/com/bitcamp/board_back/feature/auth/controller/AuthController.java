@@ -1,8 +1,10 @@
 package com.bitcamp.board_back.feature.auth.controller;
 
+import com.bitcamp.board_back.feature.auth.dto.request.EmailCertificationRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.EmailCertificationResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignOutResponseDto;
@@ -42,6 +44,13 @@ public class AuthController {
         return authService.signIn(requestBody);
     }
 
+    @PostMapping("/sign-out")
+    public ResponseEntity<? super SignOutResponseDto> signOut(
+            final @RequestBody JwtRequestDto requestBody
+    ) {
+        return authService.signOut(requestBody);
+    }
+
     @PostMapping("/email-check")
     public ResponseEntity<? super IdCheckResponseDto> idCheck (
         @RequestBody @Valid IdCheckRequestDto requestBody
@@ -50,11 +59,12 @@ public class AuthController {
         return response;
     }
 
-    @PostMapping("/sign-out")
-    public ResponseEntity<? super SignOutResponseDto> signOut(
-            final @RequestBody JwtRequestDto requestBody
+    @PostMapping("/email-certification")
+    public ResponseEntity<? super EmailCertificationResponseDto> emailCertification (
+        @RequestBody @Valid EmailCertificationRequestDto requestBody
     ) {
-        return authService.signOut(requestBody);
+        ResponseEntity<? super EmailCertificationResponseDto> response = authService.emailCertification(requestBody);
+        return response;
     }
 
     @PostMapping("/re-issue")

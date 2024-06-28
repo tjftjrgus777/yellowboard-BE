@@ -63,4 +63,8 @@ public class ApiResponse {
     public static ResponseEntity<ApiResponse> databaseError() {
         return of(ApiStatus.DATABASE_ERROR);
     }
+
+    public static ResponseEntity<ApiResponse> mailSendFail(){
+        return of(ApiStatus.FAIL_TO_SEND_EMAIL);
+    }
 }
