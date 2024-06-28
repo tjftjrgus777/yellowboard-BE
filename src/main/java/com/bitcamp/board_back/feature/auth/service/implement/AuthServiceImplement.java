@@ -60,6 +60,13 @@ public class AuthServiceImplement implements AuthService {
             if (existedEmail)
                 return SignUpResponseDto.duplicateEmail();
 
+            String certificationNumber = dto.getCertificationNumber();
+
+            CertificationEntity certificationEntity = certificationRepository.findByEmail(email);
+            boolean isMatched = 
+                certificationEntity.getCertificationNumber().equals(certificationNumber);
+            if (!isMatched) return SignUpResponseDto.CertificationFail();
+
             String nickname = dto.getNickname();
             boolean existedNickname = userRepository.existsByNickname(nickname);
             if (existedNickname)
@@ -76,6 +83,8 @@ public class AuthServiceImplement implements AuthService {
 
             UserEntity userEntity = dto.toEntity(encodedPassword);
             userRepository.save(userEntity);
+
+            certificationRepository.deleteByEmail(email);
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -187,6 +196,28 @@ public class AuthServiceImplement implements AuthService {
 
     }
 
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
+        
+        try {
+
+            String email = dto.getEmail();
+            String certificationNumber = dto.getCertificationNumber();
+        
+            CertificationEntity certificationEntity = certificationRepository.findByEmail(email);
+            if (certificationEntity == null) return CheckCertificationResponseDto.CertificationFail();
+
+            boolean isMatched = certificationEntity.getCertificationNumber().equals(certificationNumber);
+            if (!isMatched) return CheckCertificationResponseDto.CertificationFail();
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ApiResponse.databaseError();
+        }
+
+        return CheckCertificationResponseDto.success();
+    }
+
     // ################### private methods ################### //
 
     /**
@@ -230,27 +261,7 @@ public class AuthServiceImplement implements AuthService {
                 BLACK_LIST_KEY_PREFIX + accessToken, VALUE_TRUE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
 
-    @Override
-    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
-        
-        try {
 
-            String email = dto.getEmail();
-            String certificationNumber = dto.getCertificationNumber();
-        
-            CertificationEntity certificationEntity = certificationRepository.findByEmail(email);
-            if (certificationEntity == null) return CheckCertificationResponseDto.CertificationFail();
-
-            boolean isMatched = certificationEntity.getCertificationNumber().equals(certificationNumber);
-            if (!isMatched) return CheckCertificationResponseDto.CertificationFail();
-            
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return ApiResponse.databaseError();
-        }
-
-        return CheckCertificationResponseDto.success();
-    }
 
     
 }
