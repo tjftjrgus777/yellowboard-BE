@@ -1,9 +1,11 @@
 package com.bitcamp.board_back.feature.auth.controller;
 
+import com.bitcamp.board_back.feature.auth.dto.request.CheckCertificationRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.EmailCertificationRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.CheckCertificationResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.EmailCertificationResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
@@ -64,6 +66,14 @@ public class AuthController {
         @RequestBody @Valid EmailCertificationRequestDto requestBody
     ) {
         ResponseEntity<? super EmailCertificationResponseDto> response = authService.emailCertification(requestBody);
+        return response;
+    }
+
+    @PostMapping("/check-certification")
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification (
+        @RequestBody @Valid CheckCertificationRequestDto requestBody
+    ) {
+        ResponseEntity<? super CheckCertificationResponseDto> response = authService.checkCertification(requestBody);
         return response;
     }
 

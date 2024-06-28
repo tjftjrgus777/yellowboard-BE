@@ -4,10 +4,12 @@ import com.bitcamp.board_back.common.ApiResponse;
 import com.bitcamp.board_back.common.CertificationNumber;
 import com.bitcamp.board_back.exception.AuthException;
 import com.bitcamp.board_back.exception.NotFoundException;
+import com.bitcamp.board_back.feature.auth.dto.request.CheckCertificationRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.EmailCertificationRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.IdCheckRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignInRequestDto;
 import com.bitcamp.board_back.feature.auth.dto.request.SignUpRequestDto;
+import com.bitcamp.board_back.feature.auth.dto.response.CheckCertificationResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.EmailCertificationResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.IdCheckResponseDto;
 import com.bitcamp.board_back.feature.auth.dto.response.SignInResponseDto;
@@ -226,6 +228,28 @@ public class AuthServiceImplement implements AuthService {
         redisService.deleteData(email);
         redisService.setDataExpire(
                 BLACK_LIST_KEY_PREFIX + accessToken, VALUE_TRUE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
+    }
+
+    @Override
+    public ResponseEntity<? super CheckCertificationResponseDto> checkCertification(CheckCertificationRequestDto dto) {
+        
+        try {
+
+            String email = dto.getEmail();
+            String certificationNumber = dto.getCertificationNumber();
+        
+            CertificationEntity certificationEntity = certificationRepository.findByEmail(email);
+            if (certificationEntity == null) return CheckCertificationResponseDto.CertificationFail();
+
+            boolean isMatched = certificationEntity.getCertificationNumber().equals(certificationNumber);
+            if (!isMatched) return CheckCertificationResponseDto.CertificationFail();
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ApiResponse.databaseError();
+        }
+
+        return CheckCertificationResponseDto.success();
     }
 
     
