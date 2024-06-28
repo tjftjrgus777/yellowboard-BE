@@ -91,7 +91,7 @@ public enum ApiStatus {
     FAIL_TO_SEND_EMAIL(500, "FTSE", "이메일 전송 실패"),
     FAILED_TO_UPLOAD_FILE(500, "FTUF", "파일 업로드 실패"),
     FAILED_HTTP_ACTION(500, "FHA", "HTTP 요청 실패");
-
+  
     private final int statusCode;
     private final String code;
     private final String message;
