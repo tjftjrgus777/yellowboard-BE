@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +21,11 @@ public class SignUpRequestDto {
     @NotBlank @Email(message = "유효한 이메일 주소를 입력하세요.")
     private String email;
 
-    @NotBlank @Size(min=8, max=20)
+    @NotBlank @Pattern(regexp = "^(?=.*[a-zA-z])(?=.*[0-9])[a-zA-Z0-9]{8,13}$")
     private String password;
+
+    @NotBlank
+    private String certificationNumber;
 
     @NotBlank
     private String nickname;
