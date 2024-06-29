@@ -1,11 +1,11 @@
 package com.bitcamp.board_back.feature.board.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,15 +17,16 @@ import lombok.NoArgsConstructor;
 @Table(name = "image")
 public class ImageEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int sequence;
     private int boardNumber;
+    @Column(columnDefinition = "TEXT")
     private String image;
 
-    public ImageEntity(int boardNumber, String image){
+    public ImageEntity(int boardNumber, String image) {
         this.boardNumber = boardNumber;
         this.image = image;
     }
 
-    
 }

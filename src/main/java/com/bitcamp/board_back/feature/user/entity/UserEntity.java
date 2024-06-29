@@ -1,19 +1,27 @@
 package com.bitcamp.board_back.feature.user.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import com.bitcamp.board_back.feature.user.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -26,7 +34,8 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, length = 50) @Email
+    @Column(nullable = false, length = 50)
+    @Email
     private String email;
 
     @Column(nullable = false, length = 300)
@@ -36,7 +45,7 @@ public class UserEntity {
     private String nickname;
 
     @Column(nullable = false, length = 20)
-    @Pattern(regexp ="^[0-9]{11,13}$")
+    @Pattern(regexp = "^[0-9]{11,13}$")
     private String telNumber;
 
     @Column(nullable = false, length = 20)
@@ -45,6 +54,7 @@ public class UserEntity {
 
     private String address;
     private String addressDetail;
+    @Column(columnDefinition = "TEXT")
     private String profileImage;
 
     @Column(nullable = false)

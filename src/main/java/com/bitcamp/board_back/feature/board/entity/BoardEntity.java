@@ -7,6 +7,7 @@ import java.util.Date;
 import com.bitcamp.board_back.feature.board.dto.request.PatchBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostBoardRequestDto;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,13 +20,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="board")
+@Entity(name = "board")
 @Table(name = "board")
 public class BoardEntity {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int boardNumber;
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
     private String writeDatetime;
     private int favoriteCount;
@@ -48,7 +51,7 @@ public class BoardEntity {
         this.writerEmail = email;
     }
 
-    public void increaseViewCount(){
+    public void increaseViewCount() {
         this.viewCount++;
     }
 
@@ -60,7 +63,6 @@ public class BoardEntity {
         this.commentCount++;
     }
 
-
     public void decreaseFavoriteCount() {
         this.favoriteCount--;
     }
@@ -69,6 +71,5 @@ public class BoardEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
     }
-
 
 }
