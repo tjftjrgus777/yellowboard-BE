@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bitcamp.board_back.feature.file.service.FileService;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 
+import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
@@ -25,8 +28,7 @@ public class FileServiceImplement implements FileService {
     private MinioClient minioClient;
 
     // MINIO 버킷 이름 가져오기 (추후 사용자별 버킷 제공서비스)
-    @Value("${minio.bucket}")
-    private String bucketName;
+
     String fileUrl = "";
 
     @Value("${minio.access-key}")
@@ -37,17 +39,32 @@ public class FileServiceImplement implements FileService {
     private String minioUrl;
 
     @Override
-    public String upload(MultipartFile file) {
-
+    public String upload(MultipartFile file, AccountUserDetails accountUserDetails) {
+        String email = accountUserDetails.getUser().getEmail();
+        String bucketName = email.replace("@", "-at-").replace(".", "-dot-");
+        String originalFileName = file.getOriginalFilename();
+        // 추후 파일 타입에 따라 image, file, mp4로 분류
+        String filePath = "image" + "/" + System.currentTimeMillis() + "_" + originalFileName;
         if (file.isEmpty())
             return null;
 
-        String originalFileName = file.getOriginalFilename();
-
-        // 추후 파일 타입에 따라 image, file, mp4로 분류
-        String filePath = "image" + "/" + System.currentTimeMillis() + "_" + originalFileName;
+        // 오브젝트 스토리지에 email로 생성된 버컷이 있으면 그 이메일로 버킷을 사용하고,
+        // email로 된 버킷이 없으면 해당 이메일로 버킷을 생성하여 해당 버킷에 파일저장
+        try {
+            boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!isExist) {
+                minioClient.makeBucket(
+                        MakeBucketArgs.builder()
+                                .bucket(bucketName)
+                                .build());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Handle exception
+        }
 
         try (InputStream inputStream = file.getInputStream()) {
+
             // file.transferTo(new File(savePath));
 
             // Minio오브젝트에 파일 업로드
@@ -83,7 +100,9 @@ public class FileServiceImplement implements FileService {
     // minio 스토리지에서 이미지 가져오기
     // 필요한 인수는 파일 네임
     @Override
-    public Resource getiImage(String fileName) {
+    public Resource getiImage(String fileName, AccountUserDetails accountUserDetails) {
+        String email = accountUserDetails.getUser().getEmail();
+        String bucketName = email.replace("@", "-at-").replace(".", "-dot-");
         try {
             // MinioClient 객체 생성
             MinioClient minioClient = MinioClient.builder()
@@ -104,6 +123,25 @@ public class FileServiceImplement implements FileService {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public InputStream downLoad(String filePath, AccountUserDetails accountUserDetails) {
+        {
+            String email = accountUserDetails.getUser().getEmail();
+            String bucketName = email.replace("@", "-at-").replace(".", "-dot-");
+            try {
+                return minioClient.getObject(
+                        GetObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(filePath)
+                                .build());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 }

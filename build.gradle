@@ -36,6 +36,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'io.minio:minio:8.3.0'
+	implementation 'org.springframework.kafka:spring-kafka'
 
 	// SPRING DATA
 	runtimeOnly 'com.mysql:mysql-connector-j'

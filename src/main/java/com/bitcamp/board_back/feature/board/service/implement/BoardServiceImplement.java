@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +43,7 @@ import com.bitcamp.board_back.feature.board.repository.resultSet.GetFavoriteList
 import com.bitcamp.board_back.feature.board.service.BoardService;
 import com.bitcamp.board_back.feature.search.entity.SearchLogEntity;
 import com.bitcamp.board_back.feature.search.repository.SearchLogRepository;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import com.bitcamp.board_back.feature.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -156,7 +155,9 @@ public class BoardServiceImplement implements BoardService {
             Date beforeWeek = Date.from(Instant.now().minus(7, ChronoUnit.DAYS));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String sevenDaysAgo = simpleDateFormat.format(beforeWeek);
-            boardListViewEntities = boardListViewRepository.findTop3ByWriteDatetimeGreaterThanOrderByFavoriteCountDescCommentCountDescViewCountDescWriteDatetimeDesc(sevenDaysAgo);
+            boardListViewEntities = boardListViewRepository
+                    .findTop3ByWriteDatetimeGreaterThanOrderByFavoriteCountDescCommentCountDescViewCountDescWriteDatetimeDesc(
+                            sevenDaysAgo);
         } catch (Exception exception) {
             exception.printStackTrace();
             return ApiResponse.databaseError();
@@ -166,13 +167,15 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord) {
+    public ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord,
+            String preSearchWord) {
 
         List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
 
         try {
 
-            boardListViewEntities = boardListViewRepository.findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
+            boardListViewEntities = boardListViewRepository
+                    .findByTitleContainsOrContentContainsOrderByWriteDatetimeDesc(searchWord, searchWord);
 
             SearchLogEntity searchLogEntity = new SearchLogEntity(searchWord, preSearchWord, false);
             searchLogRepository.save(searchLogEntity);
@@ -182,9 +185,6 @@ public class BoardServiceImplement implements BoardService {
                 searchLogEntity = new SearchLogEntity(preSearchWord, searchWord, relation);
                 searchLogRepository.save(searchLogEntity);
             }
-
-
-
 
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -200,10 +200,11 @@ public class BoardServiceImplement implements BoardService {
 
         List<BoardListViewEntity> boardListViewEntities = new ArrayList<>();
 
-        try  {
+        try {
 
             boolean existedUser = userRepository.existsByEmail(email);
-            if (!existedUser) return GetUserBoardListResponseDto.notExistUser();
+            if (!existedUser)
+                return GetUserBoardListResponseDto.notExistUser();
 
             boardListViewEntities = boardListViewRepository.findByWriterEmailOrderByWriteDatetimeDesc(email);
 
@@ -216,7 +217,8 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, AccountUserDetails accountUserDetails) {
+    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto,
+            AccountUserDetails accountUserDetails) {
 
         try {
             String email = accountUserDetails.getUser().getEmail();
@@ -250,7 +252,7 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber,
-                                                                      AccountUserDetails accountUserDetails) {
+            AccountUserDetails accountUserDetails) {
 
         try {
             String email = accountUserDetails.getUser().getEmail();
@@ -277,7 +279,8 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, AccountUserDetails accountUserDetails) {
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber,
+            AccountUserDetails accountUserDetails) {
 
         try {
             String email = accountUserDetails.getUser().getEmail();
@@ -311,7 +314,7 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber,
-                                                                    AccountUserDetails accountUserDetails) {
+            AccountUserDetails accountUserDetails) {
         try {
             String email = accountUserDetails.getUser().getEmail();
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
@@ -367,7 +370,8 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, AccountUserDetails accountUserDetails) {
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber,
+            AccountUserDetails accountUserDetails) {
 
         try {
             String email = accountUserDetails.getUser().getEmail();

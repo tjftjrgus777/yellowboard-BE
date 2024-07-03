@@ -1,5 +1,7 @@
 package com.bitcamp.board_back.feature.file.service;
 
+import java.io.InputStream;
+
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,4 +13,5 @@ public interface FileService {
 
     Resource getiImage(String fileName, AccountUserDetails accountUserDetails);
 
+    InputStream downLoad(String filePath, AccountUserDetails accountUserDetails);
 }
