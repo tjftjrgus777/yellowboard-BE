@@ -1,8 +1,5 @@
 package com.bitcamp.board_back.feature.board.service;
 
-import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
-import org.springframework.http.ResponseEntity;
-
 import com.bitcamp.board_back.feature.board.dto.request.PatchBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostCommentRequestDto;
@@ -19,6 +16,8 @@ import com.bitcamp.board_back.feature.board.dto.response.PatchBoardResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PostBoardResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PostCommentResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PutFavoriteResponseDto;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
+import org.springframework.http.ResponseEntity;
 
 public interface BoardService {
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);

@@ -40,10 +40,13 @@ public class WebSecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/api/v1/auth/**", "/api/v1/search/**", "/api/v1/file/**","/swagger-ui.html", "/swagger-ui/**", "/api-docs/**").permitAll()
+                        .requestMatchers("/", "/api/v1/auth/**", "/api/v1/search/**", "/api/v1/file/**","/swagger-ui.html", "/swagger-ui/**", "/api-docs/**" ,"/oauth2/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/board/**", "/api/v1/user/*").permitAll()
                         .anyRequest().authenticated()
                 )
+                .oauth2Login(oauth2 -> oauth2
+                    .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                )   
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new FailedAuthenticationEntryPoint()));
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
