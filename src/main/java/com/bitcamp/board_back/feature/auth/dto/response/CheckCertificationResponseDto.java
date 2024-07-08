@@ -12,7 +12,7 @@ public class CheckCertificationResponseDto extends ApiResponse{
     }
 
     public static ResponseEntity<ApiResponse> success() {
-        CheckCertificationResponseDto responseBody = new CheckCertificationResponseDto("su", "success");
+        CheckCertificationResponseDto responseBody = new CheckCertificationResponseDto("SU", "SUCCESS");
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
 
     }
