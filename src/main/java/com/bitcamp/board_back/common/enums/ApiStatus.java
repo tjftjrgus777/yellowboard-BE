@@ -33,11 +33,11 @@ public enum ApiStatus {
     NOT_ALLOWED_EMPTY_DATE(400, "NAED", "날짜를 입력해주세요."),
     ADDRESS_COUNT_EXCEEDED(400, "ACE", "주소는 최대 3개까지 등록할 수 있습니다."),
     DEFAULT_ADDRESS_ALREADY_EXISTS(400, "DAAE", "이미 등록된 기본 주소가 있습니다."),
+    CERTIFICATION_FAIL(400, "CF", "코드인증에 실패하였습니다."),
 
     // 401 - Unauthorized : 비인증(인증 수단이 없음)
     SIGN_IN_FAIL(401, "SF", "로그인 실패하였습니다."),
     AUTHORIZATION_FAIL(401, "AF", "인증 실패하였습니다."),
-    CERTIFICATION_FAIL(401, "CF", "코드인증에 실패하였습니다."),
 
     NO_AUTHORIZATION(401, "NA", "인증 정보가 없습니다."),
     INVALID_ID_OR_PW(401, "IIP", "아이디 혹은 비밀번호가 틀렸습니다."),

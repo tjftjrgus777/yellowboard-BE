@@ -15,7 +15,7 @@ public class EmailCertificationResponseDto extends ApiResponse {
     }
 
     public static ResponseEntity<ApiResponse> success() {
-        EmailCertificationResponseDto responseBody = new EmailCertificationResponseDto("su", "success");
+        EmailCertificationResponseDto responseBody = new EmailCertificationResponseDto("SU", "SUCCESS");
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 
