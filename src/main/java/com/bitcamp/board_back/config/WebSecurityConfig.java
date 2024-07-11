@@ -1,5 +1,6 @@
 package com.bitcamp.board_back.config;
 
+import com.bitcamp.board_back.exception.handler.OAuth2SuccessHandler;
 import com.bitcamp.board_back.jwt.JwtAuthenticationFilter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -31,6 +33,8 @@ import java.util.Arrays;
 public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final DefaultOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,7 +49,10 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
+                    .authorizationEndpoint(endpoint -> endpoint.baseUri("/api/v1/auth/oauth2"))
                     .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+                    .userInfoEndpoint(endpoint -> endpoint.userService(oAuth2UserService))
+                    .successHandler(oAuth2SuccessHandler)
                 )   
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new FailedAuthenticationEntryPoint()));
 
