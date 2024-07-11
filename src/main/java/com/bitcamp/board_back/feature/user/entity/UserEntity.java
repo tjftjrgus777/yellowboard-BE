@@ -4,7 +4,6 @@ import com.bitcamp.board_back.feature.user.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +28,8 @@ public class UserEntity {
     @Column(nullable = false, length = 50) @Email
     private String email;
 
+    private String socialId;
+
     @Column(nullable = false, length = 300)
     private String password;
 
@@ -39,7 +40,10 @@ public class UserEntity {
     @Pattern(regexp ="^[0-9]{11,13}$")
     private String telNumber;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 50)
+    private String type;
+
+    @Column(nullable = true, length = 20)
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
@@ -81,6 +85,15 @@ public class UserEntity {
         this.profileImage = profileImage;
         this.userRole = userRole;
         this.agreedPersonal = agreedPersonal;
+    }
+
+    public UserEntity (String socialId, String email, String nickname, String type) {
+        this.socialId = socialId;
+        this.email = email;
+        this.nickname = nickname;
+        this.type = type;
+        
+        // this.role = "ROLE_USER";
     }
 
     public void setNickname(String nickname) {
