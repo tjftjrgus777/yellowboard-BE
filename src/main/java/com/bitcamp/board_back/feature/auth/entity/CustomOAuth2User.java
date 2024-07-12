@@ -13,8 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomOAuth2User implements OAuth2User{
 
-    private String socialId;
+    // private String socialId;
     private Map<String, Object> attributes;  // 사용자 속성을 저장하는 필드
+    private String email;
 
 
     @Override
@@ -30,7 +31,7 @@ public class CustomOAuth2User implements OAuth2User{
     }
     @Override
     public String getName() {
-        return this.socialId;
+        return this.email;
       
     }
     

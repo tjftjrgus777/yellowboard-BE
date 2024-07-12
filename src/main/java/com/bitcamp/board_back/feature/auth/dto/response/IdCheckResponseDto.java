@@ -1,6 +1,5 @@
 package com.bitcamp.board_back.feature.auth.dto.response;
 
-import static com.bitcamp.board_back.common.enums.ApiStatus.SUCCESS;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

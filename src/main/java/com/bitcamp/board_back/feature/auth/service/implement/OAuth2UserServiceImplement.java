@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
-    
+public class OAuth2UserServiceImplement extends DefaultOAuth2UserService {
+
     private final UserRepository userRepository;
 
     @Override
@@ -38,26 +38,42 @@ public class OAuth2UserServiceImplement extends DefaultOAuth2UserService{
         String socialId = null;
         String nickname = null;
         String email = null;
-   
+        String profileImage = null;
 
+       
         if (oauthClientName.equals("kakao")) {
             socialId = "kakao" + oAuth2User.getAttributes().get("id");
-            nickname = (String) ((Map)oAuth2User.getAttributes().get("properties")).get("nickname");
-            email = (String) ((Map)oAuth2User.getAttributes().get("properties")).get("account_email");
-            userEntity = new UserEntity(socialId, email, nickname,  "kakao");
+            Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttributes().get("kakao_account");
+            email = (String) kakaoAccount.get("email");
+            nickname = (String) ((Map) oAuth2User.getAttributes().get("properties")).get("nickname");
+            profileImage = (String) ((Map) oAuth2User.getAttributes().get("properties")).get("profile_image");
 
+            // 이메일로 기존 사용자 검색
+            UserEntity existingUser = userRepository.findByEmail(email);
+
+            if (existingUser == null) {
+                userEntity = new UserEntity(socialId, email, nickname, profileImage, "kakao");
+                userRepository.save(userEntity);
+
+            }
         }
 
         if (oauthClientName.equals("naver")) {
             Map<String, String> responseMap = (Map<String, String>) oAuth2User.getAttributes().get("response");
-            
-            socialId = "naver_" + responseMap.get("id").substring(0,14);
+
+            socialId = "naver_" + responseMap.get("id").substring(0, 14);
             email = responseMap.get("email");
-            userEntity = new UserEntity(socialId , email, nickname, "naver");
+            nickname = responseMap.get("name");
+          
+            UserEntity existingUser = userRepository.findByEmail(email);
+
+            if (existingUser == null) {
+                userEntity = new UserEntity(socialId, email, nickname, profileImage, "naver");
+                userRepository.save(userEntity);
+
+            }
         }
 
-        userRepository.save(userEntity);
-
-        return new CustomOAuth2User(socialId, oAuth2User.getAttributes());
+        return new CustomOAuth2User(oAuth2User.getAttributes() ,email);
     }
 }

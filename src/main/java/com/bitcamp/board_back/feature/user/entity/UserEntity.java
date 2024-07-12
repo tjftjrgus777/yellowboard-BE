@@ -87,10 +87,11 @@ public class UserEntity {
         this.agreedPersonal = agreedPersonal;
     }
 
-    public UserEntity (String socialId, String email, String nickname, String type) {
+    public UserEntity (String socialId, String email, String nickname, String profileImage, String type) {
         this.socialId = socialId;
         this.email = email;
         this.nickname = nickname;
+        this.profileImage = profileImage;
         this.type = type;
         
         // this.role = "ROLE_USER";
