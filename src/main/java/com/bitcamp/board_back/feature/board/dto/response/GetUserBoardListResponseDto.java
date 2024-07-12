@@ -3,12 +3,13 @@ package com.bitcamp.board_back.feature.board.dto.response;
 import java.util.List;
 
 import com.bitcamp.board_back.common.enums.ApiStatus;
+import com.bitcamp.board_back.feature.board.dto.object.BoardListItem;
+import com.bitcamp.board_back.feature.board.entity.BoardListViewEntity;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.bitcamp.board_back.common.ApiResponse;
-import com.bitcamp.board_back.feature.board.dto.object.BoardListItem;
-import com.bitcamp.board_back.feature.board.entity.BoardListViewEntity;
 
 import lombok.Getter;
 

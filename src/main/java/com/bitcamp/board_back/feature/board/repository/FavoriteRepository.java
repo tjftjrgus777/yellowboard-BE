@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-
 import com.bitcamp.board_back.feature.board.entity.FavoriteEntity;
 import com.bitcamp.board_back.feature.board.entity.primarykey.FavoritePk;
 import com.bitcamp.board_back.feature.board.repository.resultSet.GetFavoriteListResultSet;

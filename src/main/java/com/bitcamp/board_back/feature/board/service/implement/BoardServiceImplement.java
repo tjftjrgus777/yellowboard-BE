@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 
-
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -216,10 +216,10 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email) {
+    public ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, AccountUserDetails accountUserDetails) {
 
         try {
-
+            String email = accountUserDetails.getUser().getEmail();
             boolean existedEmail = userRepository.existsByEmail(email);
             if (!existedEmail)
                 return PostBoardResponseDto.notExistUser();
@@ -250,10 +250,10 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber,
-                                                                      String email) {
+                                                                      AccountUserDetails accountUserDetails) {
 
         try {
-
+            String email = accountUserDetails.getUser().getEmail();
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
                 return PostCommentResponseDto.notExistBoard();
@@ -277,10 +277,10 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email) {
+    public ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, AccountUserDetails accountUserDetails) {
 
         try {
-
+            String email = accountUserDetails.getUser().getEmail();
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
                 return PutFavoriteResponseDto.notExistUser();
@@ -311,10 +311,9 @@ public class BoardServiceImplement implements BoardService {
 
     @Override
     public ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber,
-                                                                    String email) {
-
+                                                                    AccountUserDetails accountUserDetails) {
         try {
-
+            String email = accountUserDetails.getUser().getEmail();
             BoardEntity boardEntity = boardRepository.findByBoardNumber(boardNumber);
             if (boardEntity == null)
                 return PatchBoardResponseDto.notExistBoard();
@@ -368,10 +367,10 @@ public class BoardServiceImplement implements BoardService {
     }
 
     @Override
-    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email) {
+    public ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, AccountUserDetails accountUserDetails) {
 
         try {
-
+            String email = accountUserDetails.getUser().getEmail();
             boolean existedUser = userRepository.existsByEmail(email);
             if (!existedUser)
                 return DeleteBoardResponseDto.notExistUser();
@@ -397,11 +396,5 @@ public class BoardServiceImplement implements BoardService {
         }
 
         return DeleteBoardResponseDto.success();
-
     }
-
-
-
-
-
 }

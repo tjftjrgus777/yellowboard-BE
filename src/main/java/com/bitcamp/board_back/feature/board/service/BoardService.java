@@ -1,7 +1,5 @@
 package com.bitcamp.board_back.feature.board.service;
 
-import org.springframework.http.ResponseEntity;
-
 import com.bitcamp.board_back.feature.board.dto.request.PatchBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostBoardRequestDto;
 import com.bitcamp.board_back.feature.board.dto.request.PostCommentRequestDto;
@@ -18,6 +16,8 @@ import com.bitcamp.board_back.feature.board.dto.response.PatchBoardResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PostBoardResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PostCommentResponseDto;
 import com.bitcamp.board_back.feature.board.dto.response.PutFavoriteResponseDto;
+import com.bitcamp.board_back.feature.user.dto.AccountUserDetails;
+import org.springframework.http.ResponseEntity;
 
 public interface BoardService {
     ResponseEntity<? super GetBoardResponseDto> getBoard(Integer boardNumber);
@@ -27,10 +27,10 @@ public interface BoardService {
     ResponseEntity<? super GetTop3BoardListResponseDto> getTop3BoardList();
     ResponseEntity<? super GetSearchBoardListResponseDto> getSearchBoardList(String searchWord, String preSearchWord);
     ResponseEntity<? super GetUserBoardListResponseDto> getUserResponseList(String email);
-    ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, String email);
-    ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, String email); 
-    ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, String email);
-    ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, String email);
+    ResponseEntity<? super PostBoardResponseDto> postBoard(PostBoardRequestDto dto, AccountUserDetails accountUserDetails);
+    ResponseEntity<? super PostCommentResponseDto> postComment(PostCommentRequestDto dto, Integer boardNumber, AccountUserDetails accountUserDetails);
+    ResponseEntity<? super PutFavoriteResponseDto> putFavorite(Integer boardNumber, AccountUserDetails accountUserDetails);
+    ResponseEntity<? super PatchBoardResponseDto> patchBoard(PatchBoardRequestDto dto, Integer boardNumber, AccountUserDetails accountUserDetails);
     ResponseEntity<? super IncreaseViewCountResponseDto> increaseViewCount(Integer boardNumber);
-    ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, String email);
+    ResponseEntity<? super DeleteBoardResponseDto> deleteBoard(Integer boardNumber, AccountUserDetails accountUserDetails);
 }

@@ -54,6 +54,10 @@ public class ApiResponse {
         return of(ApiStatus.SIGN_IN_FAIL);
     }
 
+    public static ResponseEntity<ApiResponse> CertificationFail () {
+        return of(ApiStatus.CERTIFICATION_FAIL);
+    }
+
     // 403 - Forbidden Errors
     public static ResponseEntity<ApiResponse> noPermission() {
         return of(ApiStatus.NO_PERMISSION);
@@ -62,5 +66,9 @@ public class ApiResponse {
     // 500 - Internal Server Error
     public static ResponseEntity<ApiResponse> databaseError() {
         return of(ApiStatus.DATABASE_ERROR);
+    }
+
+    public static ResponseEntity<ApiResponse> mailSendFail(){
+        return of(ApiStatus.FAIL_TO_SEND_EMAIL);
     }
 }
